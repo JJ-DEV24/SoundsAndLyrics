@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Beyonce</title>
+</head>
+<body>
+    <h1> These are Beyonce's top 3 songs: </h1>
+    <ul>
+        {{ beyonce }}
+    </ul>
+    <ul>
+        {% for each in beyonce %}
+            <li> {{ each }}</li>
+        {% endfor %}
+    </ul>
+    <ul>
+        <li> Homer Simpson </li>
+        <li> Stan </li>
+        <li> Clevland </li>
+    </ul>
+</body>
+</html>
