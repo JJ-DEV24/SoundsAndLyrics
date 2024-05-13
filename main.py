@@ -26,7 +26,6 @@ Colour scheme:
 - Fun, energising,
 """
 
-
 """Import templates"""
 # URL = http://127.0.0.1:8000
 # Server = python -m uvicorn main:app --reload
@@ -42,56 +41,85 @@ from bs4 import BeautifulSoup
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-
 """Original path"""
+
+
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Union[str, None]):
-     return {"item_id": item_id, "q": q}
+    return {"item_id": item_id, "q": q}
 
 
 """Home page"""
 artists = ['Beyonce', 'Rihanna', 'Justin Timberlake']
 beyonce = ["Halo", "Super power", "Bodyguard"]
 """Original path passed as argument through app.get decorator to retrieve content from homepage.html"""
+
+
 @app.get('/', response_class=HTMLResponse)
 def home_page(request: Request):
     return templates.TemplateResponse(request=request, name="homepage.html")
 
 
 """About page"""
-# @app.get("/aboutpage")
-# def about_page():
-#     return "<h1>About page</h1>"
+
+
 @app.get('/aboutpage', response_class=HTMLResponse)
 def about_page(request: Request):
     return templates.TemplateResponse(request=request, name="aboutpage.html")
 
 
 """Artists"""
+
+
 @app.get("/artists")
 def get_artists():
     return f"These artists are headlining tonight: {artists[0]}, {artists[1]} and {artists[2]}."
+
+
 @app.get('/beyonce', response_class=HTMLResponse)
 def get_beyonce(request: Request):
     return templates.TemplateResponse(request=request, name="beyonce.html", context={"beyonce": beyonce})
 
 
-# Beyonce, Ya Ya Lyrics
-# @app.get("/")
-# def read_root():
-#     response = requests.get("https://genius.com/Beyonce-ya-ya-lyrics")
-#     html = BeautifulSoup(response.text)
-#     html.find("Lyrics__Container-sc-1ynbvzw-1 kUgSbL")
-#     return html.find("div", {"class": "Lyrics__Container-sc-1ynbvzw-1 kUgSbL"}).text
+"""Request lyrics functionality:
+
+-->> Rihanna, Disturbia"""
+def get_rihanna_disturbia_lyrics():
+    response = requests.get('https://genius.com/Rihanna-disturbia-lyrics')
+    soup = BeautifulSoup(response.content, "html.parser")
+    r_d_lyrics_extracted = soup.find_all(attrs={"data-lyrics-container": "true"})
+    answer = []
+    for lyrics in r_d_lyrics_extracted:
+        answer.append(str(lyrics.text))
+    return answer
+
+@app.get('/rihanna_disturbia_lyrics', response_class=HTMLResponse)
+def rihanna_disturbia_lyrics_page(request: Request):
+    return templates.TemplateResponse(request=request, name="rihanna_disturbia_lyrics.html",
+                                      context={"v": get_rihanna_disturbia_lyrics(), "Jess": "jessica tendai daphne joseph"})
+
+
+# """ --->Beyonce, Ya Ya"""
+
+# response = requests.get("https://genius.com/Kanye-west-lost-in-the-world-lyrics")
+# soup = BeautifulSoup(response.content, "html.parser")
+# kw_lyrics = soup.find_all(attrs={"data-lyrics-container":"true"})
+# for lyrics in kw_lyrics:
+#     print(lyrics.text)
+@app.get("/beyonce_ya_ya_lyrics")
+def read_root():
+    response = requests.get("https://genius.com/Beyonce-ya-ya-lyrics")
+    html = BeautifulSoup(response.text)
+    html.find("Lyrics__Container-sc-1ynbvzw-1 kUgSbL")
+    return html.find("div", {"class": "Lyrics__Container-sc-1ynbvzw-1 kUgSbL"}).text
 # Note, issue with using HTML as this interrupts connection to server
 
-from bs4 import BeautifulSoup
-
-response = requests.get("https://genius.com/Beyonce-ya-ya-lyrics")
-html = BeautifulSoup(response.text)
-html.find("Lyrics__Container-sc-1ynbvzw-1 kUgSbL")
-html.find("div", {"class": "Lyrics__Container-sc-1ynbvzw-1 kUgSbL"})
-html.find("div", {"class": "Lyrics__Container-sc-1ynbvzw-1 kUgSbL"}).text
+#
+# response = requests.get("https://genius.com/Beyonce-ya-ya-lyrics")
+# html = BeautifulSoup(response.text)
+# html.find("Lyrics__Container-sc-1ynbvzw-1 kUgSbL")
+# html.find("div", {"class": "Lyrics__Container-sc-1ynbvzw-1 kUgSbL"})
+# html.find("div", {"class": "Lyrics__Container-sc-1ynbvzw-1 kUgSbL"}).text
 
 # The route() decorator enables us to associate a URL pattern with the decorated function,
 # essentially saying that if a user visits the URL defined in the decorator, the function will be triggered to handle
