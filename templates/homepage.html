@@ -8,9 +8,7 @@
     <h1 style="background-color:pink;"> Sounds and Lyrics </h1>
     <section>
     <h3> Your reliable lyrics generator :) </h3>
-    <p>
-        SEARCH BAR :)
-    </p>
+
     <p>
         Can't remember the lyrics to your favourite song? Want to indulge in a bit of karaoke with your friends on a
         road trip? Need to sing a lullaby to your children to help them fall asleep? Sounds and Lyrics is the best
@@ -18,9 +16,30 @@
         keywords in the search bar above and let Sounds and Lyrics find what you're looking for.
     </p>
     <p><b>Let the search begin!</b> <p>
+
+        <form action="/get-lyrics" method="post">
+            <div class="search-bar">
+                <input type="search" name="artists_name" id="name"/>
+                <input type="search" name="title" id="title"/>
+            </div>
+            <div>
+                <button type="submit" value="Find Lyrics"> submit name </button>
+            </div>
+        </form>
         <p>
         <a href="http://127.0.0.1:8000/aboutpage">About</a>
     </p>
     </section>
 </body>
 </html>
+
+<!--<%= def get_lyrics(name:str, title:str):-->
+<!--    with open(f"{name}-{title}-lyrics", "w") as file:-->
+<!--        file.write('lyrics')-->
+<!--        response = requests.get(f"https://genius.com/{name}{title})")-->
+<!--        soup = BeautifulSoup(response.content, "html.parser")-->
+<!--        extracted_lyrics = soup.find_all(attrs={"data-lyrics-container": "true"})-->
+<!--        answer = []-->
+<!--        for lyrics in extracted_lyrics:-->
+<!--            answer.append(str(lyrics.text))-->
+<!--        return answer %>/>-->

@@ -80,9 +80,31 @@ def get_artists():
 def get_beyonce(request: Request):
     return templates.TemplateResponse(request=request, name="beyonce.html", context={"beyonce": beyonce})
 
+"""Search Bar"""
+
+from urllib.parse import urlparse
+# @app.post('/get-lyrics')
+# def get_lyrics(request:Request):
+#     urlparse("https://genius.com/Rihanna-disturbia-lyrics")
+#
+#     with open(f"{name}-{title}-lyrics", "w") as file:
+#         file.write('lyrics')
+#         response = requests.get(f"https://genius.com/{name}{title})")
+#         soup = BeautifulSoup(response.content, "html.parser")
+#         extracted_lyrics = soup.find_all(attrs={"data-lyrics-container": "true"})
+#         answer = []
+#         for lyrics in extracted_lyrics:
+#             answer.append(str(lyrics.text))
+#         return answer
+
+# urlparse("https://genius.com/Rihanna-disturbia-lyrics")
+# # ParseResult(scheme='https', netloc='genius.com', path='/Rihanna-disturbia-lyrics', params='', query='', fragment='')
+# lyrics_parsed = urlparse("https://genius.com/Rihanna-disturbia-lyrics")
+# lyrics_parsed._replace(path=f"/{name}-{title}-lyrics")
+
+
 
 """Request lyrics functionality:
-
 -->> Rihanna, Disturbia"""
 def get_rihanna_disturbia_lyrics():
     response = requests.get('https://genius.com/Rihanna-disturbia-lyrics')
@@ -98,7 +120,7 @@ def rihanna_disturbia_lyrics_page(request: Request):
     return templates.TemplateResponse(request=request, name="rihanna_disturbia_lyrics.html",
                                       context={"v": get_rihanna_disturbia_lyrics(), "Jess": "jessica tendai daphne joseph"})
 
-
+# - read about html tags - documentation
 # """ --->Beyonce, Ya Ya"""
 
 # response = requests.get("https://genius.com/Kanye-west-lost-in-the-world-lyrics")
@@ -124,3 +146,13 @@ def read_root():
 # The route() decorator enables us to associate a URL pattern with the decorated function,
 # essentially saying that if a user visits the URL defined in the decorator, the function will be triggered to handle
 # the request
+
+
+
+@app.post('/get-lyrics')
+async def get_lyrics(request:Request):
+    user_data = await request.form()
+    artists_name = user_data['artists_name']
+    title = user_data['title']
+    print(title, artists_name)
+    return dict()
