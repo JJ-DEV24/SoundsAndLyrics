@@ -31,6 +31,8 @@ Colour scheme:
 - Fun, colourful,
 """
 import os.path
+from pathlib import Path
+import os
 
 """Import templates"""
 # URL = http://127.0.0.1:8000
@@ -66,60 +68,55 @@ def home_page(request: Request):
 
 
 @app.post('/get-lyrics')
-
 async def get_lyrics(request: Request):
     user_data = await request.form()
     user_data_a_n = user_data['artists_name'].split(' ')
     user_data_t = user_data['title'].split(' ')
     artists_name = '-'.join(user_data_a_n)
     title = '-'.join(user_data_t)
-    if os.path.isfile(f'{artists_name}-{title}-lyrics.html'):
-        with open(f'{artists_name}-{title}-lyrics.html', 'r') as f:
-            lyrics = f.read()
-        return lyrics
-
+    the_current_path = str(Path.cwd())
+    path_to_lyrics = f'{the_current_path}\\retrieved_lyrics\\{artists_name}-{title}-lyrics.html'
+    if os.path.isfile(path_to_lyrics):
+        return read_lyrics(path_to_lyrics)
     else:
-        with open(f'{artists_name}-{title}-lyrics.html', 'w', encoding="utf-8") as f:
-
-            len_artists_name = (user_data['artists_name'].split(' '))
-            len_title = (user_data['title'].split(' '))
-            if len(len_artists_name) and len(len_title) == 1:
-                artists_name_joined = '-'.join(len_artists_name)
-                title_joined = '-'.join(len_title)
-                response = requests.get(f'https://genius.com/{artists_name_joined}-{title_joined}-lyrics')
-                soup = BeautifulSoup(response.text, "html.parser")
-                retrieved_lyrics = soup.find_all(attrs={"data-lyrics-container": "true"})
-                answer = []
-                for lyrics in retrieved_lyrics:
-                    answer.append(str(lyrics.text))
-                f.write(str(answer))
+        artists_name_split = (user_data['artists_name'].split(' '))
+        title_split = (user_data['title'].split(' '))
+        artists_name_joined,title_joined = format_artists_and_title(artists_name_split, title_split)
+        request_lyrics(artists_name_joined, title_joined, path_to_lyrics)
+    return read_lyrics(path_to_lyrics)
 
 
-            else:
-                if len(len_artists_name) and len(len_title) >= 2:
-                    artists_name_joined = '-'.join(len_artists_name)
-                    title_joined = '-'.join(len_title)
-                    response = requests.get(f'https://genius.com/{artists_name_joined}-{title_joined}-lyrics')
-                    soup = BeautifulSoup(response.text, "html.parser")
-                    retrieved_lyrics = soup.find_all(attrs={"data-lyrics-container": "true"})
-                    answer = []
-                    for lyrics in retrieved_lyrics:
-                        answer.append(str(lyrics.text))
-                    f.write(str(answer))
+def request_lyrics(artist, title, filepath):
+    with open(filepath, 'w', encoding="utf-8") as f:
+        response = requests.get(f'https://genius.com/{artist}-{title}-lyrics')
+        soup = BeautifulSoup(response.text, "html.parser")
+        retrieved_lyrics = soup.find_all(attrs={"data-lyrics-container": "true"})
+        answer = []
+        for lyrics in retrieved_lyrics:
+            answer.append(str(lyrics.text))
+        f.write(str(answer))
 
-        with open(f'{artists_name}-{title}-lyrics.html','r') as f:
-            lyrics = f.read()
-        return lyrics
 
-# Test: Use setUp() (instantiates a class for each test and stores it in a flie, directory or database) and tearDown()
-# (deletes/ removes the instantiated class that was saved in a file, directory or database methods to test your get
-# lyrics function.
-# use mock-ups to test URL was parsed correctly.
+def read_lyrics(filepath):
+    with open(filepath, 'r') as f:
+        lyrics = f.read()
+    return lyrics
+
+
+def format_artists_and_title(split_list_of_artists, split_list_of_title):
+    joined_artists = '-'.join(split_list_of_artists)
+    joined_title = '-'.join(split_list_of_title)
+    return joined_artists, joined_title
+
+
+
 
 
 
 
 """About page"""
+
+
 @app.get('/aboutpage', response_class=HTMLResponse)
 def about_page(request: Request):
     return templates.TemplateResponse(request=request, name="aboutpage.html")
@@ -127,12 +124,16 @@ def about_page(request: Request):
 
 """Artists"""
 artists = ['Beyonce', 'Rihanna', 'Justin Timberlake']
+
+
 @app.get("/artists")
 def get_artists():
     return f"These artists are headlining tonight: {artists[0]}, {artists[1]} and {artists[2]}."
 
 
 """Rihanna, Disturbia"""
+
+
 def get_rihanna_disturbia_lyrics():
     response = requests.get('https://genius.com/Rihanna-disturbia-lyrics')
     soup = BeautifulSoup(response.content, "html.parser")
