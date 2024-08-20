@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="s_and_l_styles.css" />
+    <link href="{{ url_for('css', path='/s_and_l_styles.css') }}" rel="stylesheet" type="text/css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/s_and_l_styles.css" /> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
@@ -17,15 +18,11 @@
         <div class="divnav">
             <div id="navlinks">
                 <ul>
-                    <li>
-                        <a href="C:\\Users\\jtjos\\PycharmProjects\\SoundsAndLyrics\\s_and_l_index.html" class="home"> Home </a>
-                    </li>
-                    <li>
-                        <a href="C:\\Users\\jtjos\\PycharmProjects\\SoundsAndLyrics\\about.html" class="about"> About </a>
-                    </li>
-                    <li>
-                        <a href="C:\\Users\\jtjos\\PycharmProjects\\SoundsAndLyrics\\artists.html" class="artists"> Artists </a>
-                    </li>
+                    {% for key, value in nav.items() %}
+                        <li> 
+                            <a href="{{ value.url }}" class="{{ key }}"> {{ value.name }} </a>
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
@@ -46,7 +43,7 @@
 
                         <div class="divbutton">
                             <button id="submit-button" type="submit">
-                                <img src="fast_forward_emoji.png">
+                                <img src="assets/fast_forward_emoji.png">
                             </button>
                         </div>
 

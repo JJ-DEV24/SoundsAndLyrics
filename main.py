@@ -35,8 +35,6 @@ from pathlib import Path
 import os
 
 """Import templates"""
-# URL = http://127.0.0.1:8000
-# Server = python -m uvicorn main:app --reload
 from typing import Union
 from fastapi import FastAPI
 import requests
@@ -47,14 +45,17 @@ from fastapi.templating import Jinja2Templates
 from bs4 import BeautifulSoup
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="html")
+app.mount("/css", StaticFiles(directory="css"), name="css")
+app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 
-"""Original path"""
 
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None]):
-    return {"item_id": item_id, "q": q}
+# url_endpoints = ["home", "top_5", "artists"]
+url_endpoints = {
+    "home": {"name": "home", "icon": "🏠", "url": "home"}, 
+    "top5": {"name": "top 5", "icon": "🧐", "url": "top_5"}, 
+    "artists": {"name": "artists", "icon": "🎤", "url": "artists"}  
+}
 
 
 """Home page"""
@@ -64,7 +65,19 @@ def read_item(item_id: int, q: Union[str, None]):
 
 @app.get('/', response_class=HTMLResponse)
 def home_page(request: Request):
-    return templates.TemplateResponse(request=request, name="homepage.html")
+    return templates.TemplateResponse(request=request, name="s_and_l_index.html", context={"nav": url_endpoints})
+
+@app.get('/home', response_class=HTMLResponse)
+def home_page(request: Request):
+    return templates.TemplateResponse(request=request, name="s_and_l_index.html", context={"nav": url_endpoints})
+
+@app.get('/top_5', response_class=HTMLResponse)
+def home_page(request: Request):
+    return templates.TemplateResponse(request=request, name="this_weeks_top_5_tracks.html", context={"nav": url_endpoints})
+
+@app.get('/artists', response_class=HTMLResponse)
+def home_page(request: Request):
+    return templates.TemplateResponse(request=request, name="artists.html", context={"nav": url_endpoints})
 
 
 @app.post('/get-lyrics')

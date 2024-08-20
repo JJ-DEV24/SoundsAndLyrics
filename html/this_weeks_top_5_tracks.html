@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="{{ url_for('css', path='/this_weeks_top_5_tracks.css') }}" rel="stylesheet" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+    <title>Sounds and Lyrics</title>
+</head>
+
+<body class="grid">
+
+    <div class="my-div-header"> Sounds and Lyrics </div>
+    <div class="div-nav-content">
+        <div class="divnav">
+            <div class="divnav">
+                <div id="navlinks">
+                    <ul>
+                        {% for key, value in nav.items() %}
+                        <li>
+                            <a href="{{ value.url }}" class="{{ key }}"> {{ value.name }} </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="div-content">
+            <div class="album_carousel_container">
+                <div class="div_album_carorsel_wrapper">
+                    <div class="div_album_carousel">
+                        <img src="C:\\Users\\jtjos\\PycharmProjects\\SoundsAndLyrics\\j-cole-born-sinner.jpg"
+                            alt="J. Cole Born Sinner album cover" />
+                        <img src="C:\\Users\\jtjos\\PycharmProjects\\SoundsAndLyrics\\beyonce-cowboy-carter.jpg"
+                            alt="Beyonce Cowboy Carter album cover" />
+                        <img src="C:\\Users\\jtjos\\PycharmProjects\\SoundsAndLyrics\\don_toliver_love_sick.jpg"
+                            alt="Don Toliver Love Sick album cover" />
+                        <img src="C:\\Users\\jtjos\\PycharmProjects\\SoundsAndLyrics\\jhene_aiko_souled.jpg"
+                            alt="Jhene Aiko Souled Out album cover" />
+                        <img src="C:\\Users\\jtjos\\PycharmProjects\\SoundsAndLyrics\\Kendrick-Lamar-Mr-Morale-and-the-Big-Steppers.jpg"
+                            alt="Kendrick Lamar Mr Morale and the Big Steppers album cover" />
+                        <img src="C:\\Users\\jtjos\\PycharmProjects\\SoundsAndLyrics\\show_dem_camp_palmwine_music_vol_3.jpg"
+                            alt="Show Dem Camp Palmwine Music Vol 3 album cover" />
+                        <img src="C:\\Users\\jtjos\\PycharmProjects\\SoundsAndLyrics\\sir-heavy.jpg"
+                            alt="Sir Heavy album cover" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
