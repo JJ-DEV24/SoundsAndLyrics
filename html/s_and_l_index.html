@@ -29,21 +29,23 @@
         <div class="div-content">
                 <div class="divpara">Looking for the lyrics to your favourite song? Enter the artist's name and title of the song below... </div>
 
-                <form class="flex-form">
+                <!-- <form class="flex-form"> -->
+                <form class="flex-form" action="/get-lyrics" method="post">
+
 
                         <div class="divartistname">
-                                <label for="artist_name">Artist's name</label>
-                                <input type="text" name="artist" value="" id="artist_name" placeholder="e.g. Beyonce">
+                                <label for="artists_name">Artist's name</label>
+                                <input type="search" name="artists_name" value="" id="artists_name" placeholder="e.g. Beyonce">
                         </div>
 
                         <div class="divtitle">
                             <label for="title">Title</label>
-                            <input type="text" name="title" value="" id="title" placeholder="e.g. Bodyguard">
+                            <input type="search" name="title" value="" id="title" placeholder="e.g. Bodyguard">
                         </div>
 
                         <div class="divbutton">
                             <button id="submit-button" type="submit">
-                                <img src="assets/fast_forward_emoji.png">
+                                <img src="assets/fast_forward_emoji.png">           
                             </button>
                         </div>
 

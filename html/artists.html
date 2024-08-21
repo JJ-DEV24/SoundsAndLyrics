@@ -3,7 +3,7 @@ Artists...
 <div class="divnav">
     <div id="navlinks">
         <ul>
-            {% for key, value in nav.items() %}
+            {% for key, value in the_data_im_sending_back.items() %}
                 <li> 
                     <a href="{{ value.url }}" class="{{ key }}"> {{ value.name }} </a>
                 </li>

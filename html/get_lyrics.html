@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    $formatter->setJsonPrettyPrint(true);
+$formatter->setJsonPrettyPrint(false);
+
+<head>
+    <meta charset="UTF-8">
+    <link href="{{ url_for('css', path='/get_lyrics_styles.css') }}" rel="stylesheet" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+    <title>Sounds and Lyrics</title>
+</head>
+
+<body class="grid">
+
+    <div class="my-div-header"> Sounds and Lyrics </div>
+    <div class="div-nav-content">
+        <div class="divnav">
+            <div id="navlinks">
+                <ul>
+                    {% for key, value in nav.items() %}
+                        <li> 
+                            <a href="{{ value.url }}" class="{{ key }}"> {{ value.name }} </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+       
+        <div class="div-content">
+            {{ retrieved_lyrics }}
+        </div>  
+    </div>
+</body>
+
+</html>
+

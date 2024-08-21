@@ -64,7 +64,7 @@ url_endpoints = {
 
 
 @app.get('/', response_class=HTMLResponse)
-def home_page(request: Request):
+def index_page(request: Request):
     return templates.TemplateResponse(request=request, name="s_and_l_index.html", context={"nav": url_endpoints})
 
 @app.get('/home', response_class=HTMLResponse)
@@ -72,11 +72,11 @@ def home_page(request: Request):
     return templates.TemplateResponse(request=request, name="s_and_l_index.html", context={"nav": url_endpoints})
 
 @app.get('/top_5', response_class=HTMLResponse)
-def home_page(request: Request):
+def top_5_page(request: Request):
     return templates.TemplateResponse(request=request, name="this_weeks_top_5_tracks.html", context={"nav": url_endpoints})
 
 @app.get('/artists', response_class=HTMLResponse)
-def home_page(request: Request):
+def artists_page(request: Request):
     return templates.TemplateResponse(request=request, name="artists.html", context={"nav": url_endpoints})
 
 
@@ -96,7 +96,9 @@ async def get_lyrics(request: Request):
         title_split = (user_data['title'].split(' '))
         artists_name_joined,title_joined = format_artists_and_title(artists_name_split, title_split)
         request_lyrics(artists_name_joined, title_joined, path_to_lyrics)
-    return read_lyrics(path_to_lyrics)
+    # return read_lyrics(path_to_lyrics)
+    return templates.TemplateResponse(request=request, name="get_lyrics.html", context={"retrieved_lyrics": read_lyrics(path_to_lyrics)})
+
 
 
 def request_lyrics(artist, title, filepath):
@@ -107,13 +109,14 @@ def request_lyrics(artist, title, filepath):
         answer = []
         for lyrics in retrieved_lyrics:
             answer.append(str(lyrics.text))
-        f.write(str(answer))
+        f.write(str(" ".join(answer)))
 
 
 def read_lyrics(filepath):
-    with open(filepath, 'r') as f:
-        lyrics = f.read()
+    with open(filepath, 'r', encoding="utf-8") as f:
+        lyrics = f.read().replace("\\", " ")
     return lyrics
+    
 
 
 def format_artists_and_title(split_list_of_artists, split_list_of_title):
