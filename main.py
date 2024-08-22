@@ -90,14 +90,15 @@ async def get_lyrics(request: Request):
     the_current_path = str(Path.cwd())
     path_to_lyrics = f'{the_current_path}\\retrieved_lyrics\\{artists_name}-{title}-lyrics.html'
     if os.path.isfile(path_to_lyrics):
-        return read_lyrics(path_to_lyrics)
+        return templates.TemplateResponse(request=request, name="get_lyrics.html", context={"retrieved_lyrics": read_lyrics(path_to_lyrics), "nav": url_endpoints})
+
     else:
         artists_name_split = (user_data['artists_name'].split(' '))
         title_split = (user_data['title'].split(' '))
         artists_name_joined,title_joined = format_artists_and_title(artists_name_split, title_split)
         request_lyrics(artists_name_joined, title_joined, path_to_lyrics)
     # return read_lyrics(path_to_lyrics)
-    return templates.TemplateResponse(request=request, name="get_lyrics.html", context={"retrieved_lyrics": read_lyrics(path_to_lyrics)})
+    return templates.TemplateResponse(request=request, name="get_lyrics.html", context={"retrieved_lyrics": read_lyrics(path_to_lyrics), "nav": url_endpoints})
 
 
 
